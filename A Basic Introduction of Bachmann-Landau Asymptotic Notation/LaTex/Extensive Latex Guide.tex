@@ -1,0 +1,464 @@
+\documentclass[9pt]{report}
+
+\usepackage[margin=0.7in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm} % Math packages
+\usepackage[backend=biber]{biblatex}
+\addbibresource{references.bib}     
+
+\usepackage{cleveref} % Inline referencing
+
+
+\usepackage{setspace} 
+\doublespacing
+
+
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\renewcommand{\qedsymbol}{}
+\newcommand\RR{\mathbb R}
+\newcommand\RRE{\overline{\mathbb R}}
+\newcommand\abs[1]{\left\lvert#1\right\rvert}
+\newcommand\fl[1]{\left\lfloor#1\right\rfloor}
+\newcommand\Li{\mathrm{Li}}
+
+\title{\huge \textbf{A Basic Introduction of Bachmann-Landau Asymptotic Notation }}
+\author{\Large Riddhiman Bhattacharya}
+\date{}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\hrulefill
+\large
+\chapter{Introduction}\label{sec:introduction}
+
+Paul Bachmann introduced the $O$ notation in his book \textit{Die Analytische Zahlentheorie}\footnote{In English \textit{Analytic Number Theory}} \cite{Bachmann1894} while working on asymptotic estimates and handling error terms in analytic number theory. His ideas served as inspiration for Edmund Landau, who further refined the concept and introduced a stronger variant known as the little-$o$ notation in his book \textit{Handbuch der Lehre von der Verteilung der Primzahlen}\footnote{In English \textit{Handbook of the theory of distribution of prime numbers}} \cite{Landau1909}. These notations are now extensively used in the field of analytic number theory.
+
+Although mathematicians generally grasp the meaning of big-$O$ and little-$o$ notation intuitively, effectively communicating their precise definitions can sometimes pose challenges. Therefore, this paper aims to thoroughly comprehend the essence of big-$O$ and little-$o$ notation and elucidate how to appropriately apply them in various mathematical contexts.
+
+
+\chapter{Theory}\label{sec:theory}
+
+Both big-$O$ notation and little-$o$ notation are mathematical tools used to compare the behavior of one function concerning another function as their inputs approach certain limits. Typically, these limits are chosen as \(+\infty\) (referred to as infinite asymptotics) or \(0\) (referred to as infinitesimal asymptotics). However, the definition provided here expands this concept to encompass any real limit point \(a \in \mathbb{R}_\text{ext}\). Despite this generalization, the primary and most commonly encountered scenarios are still when \(a = 0\) (infinitesimal asymptotics) and \(a = \infty\) (infinite asymptotics). Here, \(\mathbb{R}_\text{ext}\) denotes the set of extended real numbers, which is defined as \(\mathbb{R}_\text{ext} = \mathbb{R} \cup \{\pm\infty\}\) according to the work by Rudin \cite{Rudin1953}.
+
+
+
+
+
+\section{Big-$O$}\label{ssec:bigo}
+
+In the family of Bachmann-Landau notations, we can define each notation using either a direct limit-based approach or a quantifier-based approach.
+
+\begin{definition}
+    Let \(a \in \RRE\) be a real number or \(\pm \infty\), and consider real functions \(f\) and \(g\) defined on a neighborhood of \(a\), with \(g\) being nonzero on this neighborhood. We say that \(f(x) = O_a(g(x))\) or simply \(f(x) = O(g(x))\) as \(x\) approaches \(a\) if one of the following equivalent conditions holds:
+    \begin{enumerate}
+        \item There exists \(\delta \in (0, \infty)\) such that
+            \[\sup_{x \in N_{\delta}(a)} \left| \frac{f(x)}{g(x)} \right| < \infty;\]
+        \item There exist positive constants \(k\) and \(\delta\) such that for all \(x \in N_{\delta}(a)\), we have \(\left| f(x) \right| \leq k \left| g(x) \right|\).
+    \end{enumerate}
+\end{definition}
+
+Here, \(N_{\delta}(a)\) represents the neighborhood of \(a\) with radius \(\delta\). For finite \(a\), this neighborhood is \((a-\delta, a+\delta)\).
+
+For infinite values, we handle it differently by defining \(N_{\delta}(\infty) = (\delta, \infty)\) and \(N_{\delta}(-\infty) = (-\infty, -\delta)\).
+
+The set implicit in the first supremum is denoted as
+\[S_{\delta} = \left\{ \left| \frac{f(x)}{g(x)} \right| : x \in (a - \delta, a + \delta) \right\}.\]
+
+Let \(s_{\delta} = \sup S_{\delta}\). If \(s_{\delta} < \infty\) for some \(\delta\), then we observe that \(s_{\delta}\) acts as an upper bound for the set \(S_{\delta}\). Consequently, for all \(x\) in the neighborhood \(N_{\delta}\), we have \(\left| f(x) \right| \leq s_{\delta} \left| g(x) \right|\). Hence, the first condition (the existence of a finite supremum) implies the second condition (the existence of \(k, \delta\) such that \(\left| f(x) \right| \leq k \left| g(x) \right|\) for \(x \in N_{\delta}\)).
+
+Conversely, let's assume that there exist positive constants \(k\) and \(\delta\) such that for all \(x\) in the neighborhood \(N_{\delta}(a)\), we've \(\left| f(x) \right| \leq k \left| g(x) \right|\). This means that \(k\) serves as an upper bound for \(S_{\delta}\). By utilizing, the least-upper-bound property of the real numbers, we can deduce that \(S_{\delta}\) has a finite supremum. Therefore, the second condition implies the existence of a finite supremum \(s_{\delta} < \infty\) for \(S_{\delta}\).
+
+Thus, we've shown that the two conditions, namely the existence of a finite supremum for \(S_{\delta}\) and the existence of \(k, \delta\) such that \(\left| f(x) \right| \leq k \left| g(x) \right|\) for \(x \in N_{\delta}\), are equivalent. (As evident in this argument, the first condition essentially indicates that \(\left| f(x)/g(x) \right|\) should be bounded above in some neighborhood of \(a\).)
+
+
+
+
+\textbf{Note},  \(g\) must be nonzero is essential for making sense of the fraction \(f(x)/g(x)\). However, it suffices for \(g\) to be nonzero over some neighborhood of \(a\) to make the definition of \(O_a\) applicable. This can be achieved by finding a \(\delta\) that is smaller than the radius of the neighborhood in which \(g\) is nonzero.
+
+The original definition, found in \cite{Landau1909}, focuses on the case \(a=\infty\) since analytic number theory primarily deals with infinite limits. Conversely, the case when \(a = 0\) becomes useful in analysis, particularly when approximating functions by truncating higher-order terms in their Taylor series.
+
+While \(O_a\) might seem of limited use for finite nonzero values of \(a\), it is preferable to defining \(O_0\) and \(O_{\infty}\) separately because it emphasizes the commonality and unity between both concepts.
+
+\textbf{Examples:}
+\begin{itemize}
+ 
+\item  For \(a=\infty\), \(O_{\infty}\) considers the behavior of functions as they approach infinity, which is crucial in analytic number theory.
+
+\item On the other hand, when \(a = 0\), \(O_0\) becomes significant in analysis, particularly for approximating functions using their Taylor series and discarding higher-order terms.
+\end{itemize}
+
+Although \(O_a\) may not find extensive use for finite nonzero values of \(a\), having a unified definition that encompasses both \(O_0\) and \(O_{\infty}\) highlights the connection between these concepts and their applicability in different mathematical domains.
+
+
+When it comes to Bachmann-Landau's notations, understanding the true essence is more important than a definition. A helpful way to grasp big-$O$ notation is to view it as analogous to the \(\le\) symbol used with numbers:
+
+\begin{center}
+\(f(x) = O_a(g(x))\) means that \(f(x)\) is less than or equal to \(g(x)\) in the limit, up to a constant factor. \\
+(If \(f\) does not dominate \(g\), then \(a\) is not greater than \(b\))
+\end{center}
+
+\textbf{Examples:}
+
+Let's examine some examples to illustrate the concepts of Bachmann-Landau notation:
+\begin{itemize}
+    \item  Verification of \(100x^2 = O_{\infty}(x^3)\) using both conditions:
+    \begin{itemize}
+        \item Using the first condition, for any \(\delta\in(0,\infty)\), we find that \(\sup_{x>\delta}\abs{\frac{100x^2}{x^3}} = \frac{100}{\delta} < \infty\). Thus, \(100x^2\) is bounded by \(x^3\) as \(x\) approaches \(\infty\).
+        \item Using the second condition, we observe that for \(x>1\), \(100x^2 \leq 100x^3\). In the analogy, \(100x^2\) is "less than or equal to" \(x^3\) in the limit to infinity since \(x^2\) grows slower than \(x^3\) as \(x\) approaches \(\infty\).
+\end{itemize}
+
+\item Relationship between \(f = O_{\infty}(g)\) and \(f = O_{-\infty}(g)\) for functions that are either even or odd:
+   - If both \(f\) and \(g\) are either even or odd functions, then \(f = O_{\infty}(g)\) if and only if \(f = O_{-\infty}(g)\). Consequently, \(100x^2 = O_{-\infty}(x^3)\).
+
+\item Disproving \(100x^2 = O_0(x^3)\) but confirming \(x^3 = O_0(100x^2)\):
+   - It is false that \(100x^2 = O_0(x^3)\), as assuming so would lead to the absurdity that there exist \(\delta, k \in (0,\infty)\) such that \(\abs{x} < \delta\) implies \(x \geq k/100\).
+   - However, we find that \(x^3 = O_0(100x^2)\), since for \(\abs{x} < 100\), \(x^3 \leq 100x^2\). Visually, the graph of \(100x^2\) lies below the graph of \(x^3\) for \(x > 100\) (implying \(100x^2 \leq x^3\) as \(x \to \infty\)), and the graph of \(x^3\) lies below the graph of \(100x^2\) for \(x < 100\) (indicating \(x^3 \leq 100x^2\) as \(x \to 0\)).
+
+\item An exaggerated example: \(x^2 = O_{\infty}(x^{100})\) but \(x^{100} = O_0(x^2)\).
+
+\item Condition for \(f = O_a(g)\) at a finite \(a\):
+   - If \(f\) does not have any asymptote at \(a\) and \(g\) is nonzero in some neighborhood of \(a\), then we have \(f = O_a(g)\). This is because \(\abs{f/g}\) achieves its supremum over a sufficiently small neighborhood.
+
+\end{itemize}
+
+And thus the notation \(O_a\) is not commonly used because it is most relevant when \(a = 0\) or \(a = \infty\). As a result, the literature often presents \(f(x) = O(g(x))\) as \(x \to a\), or sometimes omits the "as \(x \to a\)" altogether since the value of \(a\) is usually clear from the context.
+
+From this point forward, we'll drop the \(a\) subscripts, and in some cases, like in the following theorem, we'll also omit the variable \(x\).
+
+\begin{theorem}[Transitivity]
+If \(f = O(g)\) and \(g = O(h)\), then \(f = O(h)\). (If \(a\) is not specified, neither explicitly nor from context, as in this theorem, then assume any arbitrary \(a \in \RRE\).)
+\end{theorem}
+
+\begin{proof}
+By definition, there exist \(k, l, \delta, \epsilon \in (0, \infty)\) such that \(\abs{f(x)} \leq k \abs{g(x)}\) for all \(x \in N_{\delta}(a)\) and \(\abs{g(x)} \leq l \abs{h(x)}\) for all \(x \in N_{\epsilon}(a)\). Therefore, we've:
+\[\abs{f(x)} \leq k \abs{g(x)} \leq kl \abs{h(x)}\]
+for all \(x \in N_{\min(\delta, \epsilon)}(a)\).
+\end{proof}
+
+
+\section{Little-$o$}\label{ssec:littleo}
+
+Once, we've got a way to compare functions using the \(\leq\) notation, we wonder if a similar notion exists for the \(<\) comparison. This leads us to the concept of little-\(o\).
+
+\begin{definition}
+Given \(a \in \RRE\) and real functions \(f\) and \(g\) defined on a neighborhood of \(a\), where \(g\) is nonzero on this neighborhood, we say that \(f(x) = o_a(g(x))\) or \(f(x) = o(g(x))\) as \(x\) approaches \(a\) if one of the following equivalent conditions holds:
+\begin{enumerate}
+    \item The limit of \(f(x)/g(x)\) as \(x\) approaches \(a\) is \(0\).
+    \item For all \(k > 0\), there exists \(\delta \in (0, \infty)\) such that \(\abs{f(x)} \leq k\abs{g(x)}\) for all \(x \in N_{\delta}(a)\).\footnote{The \(k\) is placed on the right side here to align with the definition of big-$O$, but it actually belongs on the left side because it is \(g\) that is always greater no matter which multiple of \(f\) we take.}
+\end{enumerate}
+\end{definition}
+
+
+The equivalence in this case can be established using the definition of a limit. If \(\lim_{x\to a} f(x)/g(x) = 0\), then for all \(k>0\), there exists a \(\delta > 0\) such that \(\abs{f(x)/g(x)} < k\) for all \(x\in N_{\delta}(a)\), and vice versa.
+
+Again, it's worth noting that the definition given by Landau in \cite{Landau1909} assumes \(a = \infty\).
+
+To gain an intuitive understanding of little-\(o\), consider the following:
+
+\begin{center}
+    \(f(x) = o_a(g(x))\) means that \(kf(x) < g(x)\) in the limit for \textit{any} \(k\). \\
+    (\(g\) dominates \(f\) \(\iff\) \(b\) is greater than \(a\))
+\end{center}
+
+Thus, little-\(o\) is stronger than big-\(O\), as \(f(x) = o_a(g(x))\) implies \(f(x) = O_a(g(x))\), but the reverse is not necessarily true.
+
+
+\textbf{Example:}
+
+\begin{itemize}
+    \item As \(x\) approaches infinity, \(\sin x\) grows slower than \(x\), denoted as \(\sin x = o_{\infty}(x)\), since \(\sin x / x\) tends to \(0\) as \(x\) goes to infinity. However, as \(x\) approaches \(0\), \(\sin x\) does not satisfy \(\sin x = o_0(x)\) because the limit of \(\sin x / x\) is \(1\) and not \(0\). Similarly, \(x\) is not \(o_0(\sin x)\) either, as \(x/\sin x\) also has a limit of \(1\). The fact that \(\sin x = o_{\infty}(x)\) can also be shown using the second condition. For any \(k > 0\), we can find a \(\delta\) such that \(\sin x \leq kx\) for all \(x > \delta\). For example, \(\delta = 1/k\) works.
+
+    \item If the limit of a function \(f(x)\) as \(x\) approaches \(0\) is \(0\), then we can say \(f = o_0(1)\). Consequently, we have \(\sin x = o_0(1)\) and \(\tan x = o_0(1)\) since their limits as \(x\) approaches \(0\) are \(0\).
+
+    \item In a previous section\ref{ssec:bigo}, it was shown that \(100x^2 = O_{\infty}(x^3)\). Moreover, since \(100x^2/x^3 = 100/x\) tends to \(0\) as \(x\) approaches infinity, we have \(100x^2 = o_{\infty}(x^3)\). However, it is important to note that while \(bx^3 = O_{\infty}(x^3)\) for any real constant \(b\), the same is not true when big-$O$ is replaced by little-$o$.
+
+    \item The relationship \(f(x) = o_a(g(x))\) holds if and only if \(f(x+a) = o_0(g(x+a))\) for real functions \(f\) and \(g\) defined all over \(\mathbb{R}\).
+\end{itemize}
+
+
+As with big-$O$ notation, we often omit the subscript and sometimes the variable when using little-$o$ notation.
+
+\begin{theorem}[Transitivity]
+    If \(f = o(g)\) and \(g = o(h)\), then \(f = o(h)\).
+\end{theorem}
+
+\begin{proof}
+    Let \(m\) be a positive real number. Since \(f = o(g)\), there exist positive real numbers \(\delta\) and \(\epsilon\) such that \(\abs{f(x)} \leq \sqrt{m} \abs{g(x)}\) for all \(x\) in the neighborhood \(N_{\delta}(a)\). Similarly, since \(g = o(h)\), there exist positive real numbers \(\delta'\) and \(\epsilon'\) such that \(\abs{g(x)} \leq \sqrt{m} \abs{h(x)}\) for all \(x\) in the neighborhood \(N_{\epsilon'}(a)\).
+
+    Now, consider the neighborhood \(N_{\min(\delta, \epsilon')}\) of \(a\). For all \(x\) in this neighborhood, we've:
+    \[\abs{f(x)} \leq \sqrt{m} \abs{g(x)} \leq m \abs{h(x)}.\]
+
+    Therefore, I've shown that for any positive real number \(m\), there exists a neighborhood around \(a\) such that \(\abs{f(x)} \leq m \abs{h(x)}\) for all \(x\) in this neighborhood. This precisely means that \(f = o(h)\).
+\end{proof}
+
+\section{Bachmann-Landau equations}\label{ssec:equations}
+
+We introduce a new type of equation that allows the presence of big-$O$'s and little-$o$'s on either side, leading to equations like \(x^2 + O(x^3)o(1) = o(x^4)\). These equations are referred to as \textit{Bachmann-Landau equations}. However, there is some confusion as mathematicians usually don't differentiate between Bachmann-Landau equations and normal equations.
+
+To clarify this, it's better to consider normal equations as a specific case within the broader class of Bachmann-Landau equations. The Bachmann-Landau equations make claims about the existence of certain functions satisfying particular properties. The following definition describes this general situation, without getting too formal.
+
+\begin{definition}
+Given a real number \(a \in \RRE\), we represent \(X^i\) and \(Y^j\) as placeholders for either \(O\) or \(o\) with \(i=1,2,\ldots,m\) and \(j=1,2,\ldots,n\).
+Let \(f_i\) and \(g_j\) be real functions defined and nonzero on a neighborhood of \(a\) for \(i=1,2,\ldots,m\) and \(j=1,2,\ldots,n\).
+A Bachmann-Landau equation in \(x\) has the form:
+\[F(X^1(f_1(x)), X^2(f_2(x)), \ldots, X^m(f_m(x))) = G(Y^1(g_1(x)), Y^2(g_2(x)), \ldots, Y^n(g_n(x)))\]
+where \(F\) and \(G\) are expressions involving the placeholders \(X^i\) and \(Y^j\).
+This equation implies the following: for any real functions \(f_1^*, \ldots, f_m^*\) defined on a neighborhood of \(a\) such that \(f_i^*(x) = X^i(f_i(x))\), there exist real functions \(g_1^*, \ldots, g_n^*\) defined on an equal or larger neighborhood of \(a\) such that \(g_j^*(x) = Y^j(g_j(x))\), and the equation holds:
+\[F(f_1^*(x), f_2^*(x), \ldots, f_m^*(x)) = G(g_1^*(x), g_2^*(x), \ldots, g_n^*(x))\]
+for all \(x\) for which the left side is defined.
+\end{definition}
+
+
+\textbf{Note} that Bachmann-Landau equations are \textit{not symmetric}, as the following examples show.
+They are thus to be read left-to-right.
+
+\textbf{Examples:}
+
+\begin{itemize}
+    \item We will verify the Bachmann-Landau equation \(x^2 + O(x^3)o(1) = o(x^4)\) as \(x\to\infty\). Let \(f\) and \(g\) be real functions defined everywhere such that \(\abs{f(x)} \leq k\abs{x}^3\) for all \(x\in(-\delta,\delta)\) for some finite \(\delta>0\), and \(\lim_{x\to 0} g(x) = 0\). We need to show that \(\frac{x^2 + f(x)g(x)}{x^4}\to 0\) as \(x\to\infty\). By analyzing the limits, we find that \(f(x)/x^4 \to 0\) as \(x\to\infty\), which is trivial to prove.
+
+    \item We will verify \(n^{O(1)} = e^{O(n)}\) as \(n\to\infty\). Let \(f\) be a real function defined on \(\RR_{>0}\) such that \(f = O(1)\). We need to show that \(f(n)\log n = O(n)\). By defining \(N\) and \(k\) based on \(f\), we find that \(\abs{f(n)}\log n \le kn\) for \(n > \max(N,1)\).
+
+    \item However, \(e^{O(n)} \ne n^{O(1)}\). This means there exists some \(f(n) = O(n)\) for which there is no \(g(n) = O(1)\) satisfying \(e^{f(n)} = n^{g(n)}\). Taking \(f(n) = n\) as an example, the only possible function \(g\) would be \(g(n) = n/\log n\), but \(n/\log n\) is not \(O(1)\).
+
+    \item The Riemann hypothesis implies \(\pi(x) = \Li(x) + O(\sqrt x \log x)\), where \(\pi(x)\) is the number of primes from \(1\) to \(x\) and \(\Li(x) = \int_2^x dt/\log t\). This equation means \(\abs{\pi(x) - \Li(x)} \le k\sqrt x \log x\) for some real \(k>0\) and all sufficiently large \(x\).
+
+    \item If \(F=G\) and \(G=H\) are valid Bachmann-Landau equations, then \(F=H\) is also valid according to the definition. This allows us to write chains of equalities.
+\end{itemize}
+
+
+Fortunately, we don't have to go through such long calculations when we are dealing with Bachmann-Landau equations.
+There are some recurring ways in which Bachmann-Landau equations are manipulated that are explained in the following two theorems.
+Assume a fixed value of \(a\).
+
+\begin{theorem}
+    Let \(\lambda\in\RR\), and let \(f,g\) be real functions defined and nonzero on some neighbourhood of \(a\).
+    Then we have \(O(f)O(g) = O(fg)\), \(fO(g) = O(fg)\), \(\lambda O(f) = O(f)\), and \(O(\lambda f) = O(f)\).
+    If \(f\) and \(g\) are nonnegative, then \(O(f) + O(g) = O(\max(f, g))\) and in particular \(O(f) + O(f) = O(f)\).
+\end{theorem}
+
+Each of the equations in the statement of the above theorem is a Bachmann-Landau equation, as the proof makes clear.
+
+\begin{proof}
+    Suppose \(f_1 = O(f)\) and \(g_1 = O(g)\), so there exist \(\delta,\epsilon,k,l\in(0,\infty)\) such that \(\abs{f_1(x)} \leq k\abs{f(x)}\) for all \(x\in N_{\delta}(a)\) and \(\abs{g_1(x)} \leq l\abs{g(x)}\) for all \(x\in N_{\epsilon}(a)\).
+    We know that \(N_{\delta}(a) \cap N_{\epsilon}(a) = N_{\gamma}(a)\) for some \(\gamma\in(0,\infty)\).\footnote{We have \(\gamma = \min(\delta,\epsilon)\) if \(a\) is finite, and \(\gamma = \pm\max(\delta,\epsilon)\) if \(a=\pm\infty\).}
+    Let \(m=\max(k,l)\).
+    Then \(\abs{f_1(x)/f(x)} \leq m\) and \(\abs{g_1(x)/g(x)} \leq m\) for all \(x\in N_{\gamma}(a)\), therefore
+    \[\abs{\frac{f_1(x)g_1(x)}{f(x)g(x)}} \leq m^2\]
+    for all \(x\in N_{\gamma}(a)\); this proves the first equation.
+    The second and third equations follow from
+    \[\abs{\frac{f(x)g_1(x)}{f(x)g(x)}} = \abs{\frac{g_1(x)}{g(x)}} \leq l\quad\forall x\in N_{\epsilon}(a) \qquad \text{and} \qquad \abs{\frac{\lambda f_1(x)}{f(x)}} = \abs{\lambda}\frac{f_1(x)}{f(x)} \leq k\abs{\lambda}\quad\forall x\in N_{\delta}(a).\]
+    The fourth equation follows from the fact that
+    \[\sup_{N_{\kappa}(a)} \abs{\frac{f_2(x)}{\lambda f(x)}} < \infty \implies \sup_{N_{\kappa}(a)} \abs{\frac{f_2(x)}{f(x)}} < \infty\]
+    for any real function \(f_2\) defined on a neighbourhood of \(a\).
+    Finally, if \(f\) and \(g\) are both nonnegative, then for all \(x\in N_{\gamma}(a)\) we have
+    \begin{align*}
+        \abs{f_1(x)+g_1(x)} &\leq \abs{f_1(x)} + \abs{g_1(x)} \\
+        &\leq m(\abs{f(x)} + \abs{g(x)}) \\
+        &= m(f(x)+g(x)) \\
+        &\leq 2m\max(f(x),g(x)) = 2m\abs{\max(f(x), g(x))}.
+    \end{align*}
+\end{proof}
+
+The exact same theorem holds with big-$O$ replaced by little-$o$.
+
+\begin{theorem}
+    Let \(\lambda\in\RR\), and let \(f,g\) be real functions defined and nonzero on some neighbourhood of \(a\).
+    Then we have \(o(f)o(g) = o(fg)\), \(fo(g) = o(fg)\), \(\lambda o(f) = o(f)\), and \(o(\lambda f) = o(f)\).
+    If \(f\) and \(g\) are nonnegative, then \(o(f) + o(g) = o(\max(f, g))\) and in particular \(o(f) + o(f) = o(f)\).
+\end{theorem}
+
+\begin{proof}
+Let \(f_1\) and \(g_1\) be real functions defined on a neighborhood of \(a\) such that \(f_1 = o(f)\) and \(g_1 = o(g)\). The fact that \(\lim_{x\to a} f_1(x)/f(x) = \lim_{x\to a} g_1(x)/g(x) = 0\) implies that \(\lim_{x\to a} \frac{f(x)g_1(x)}{f(x)g(x)} = \lim_{x\to a} \frac{g_1(x)}{g(x)} = 0\) and \(\lim_{x\to a} \frac{f_1(x)g_1(x)}{f(x)g(x)} = \left(\lim_{x\to a} \frac{f_1(x)}{f(x)}\right) \left(\lim_{x\to a} \frac{g_1(x)}{g(x)}\right) = 0\). This shows that \(o(f)o(g)=o(fg)\) and \(fo(g)=o(fg\)). Moreover, if \(\lim_{x\to a} \lambda f_1(x)/f(x)\) holds, then \(\lambda o(f) = o(f)\). Similarly, if \(f_2 = o(\lambda f)\), then \(\lim_{x\to a} f_2(x)/(\lambda f(x)) = 0\), and consequently, \(\lim_{x\to a} f_2(x)/f(x) = 0\), which implies \(o(\lambda f) = o(f)\). Now, suppose \(f\) and \(g\) are non-negative, which means \(f_1\) and \(g_1\) are also nonnegative. For any \(m\in(0,\infty)\), there exist \(\delta,\epsilon\in(0,\infty)\) such that \(f_1(x) \le mf(x)\) for all \(x\) in a neighborhood \(N_{\delta}(a)\) and \(g_1(x) \le mg(x)\) for all \(x\) in a neighborhood \(N_{\epsilon}(a)\). Consequently, \(f_1(x) + g_1(x) \le m(f(x) + g(x))\) for all \(x\) in a neighborhood \(N_{\zeta}(a)\), where \(\zeta = \min(\delta,\epsilon)\).
+\end{proof}
+
+
+\chapter{Application: Average Orders of Divisor Functions}\label{sec:applications}
+
+We explore some very basic estimates in analytic number theory that require big-$O$ to explain the use of Bachmann-Landau notation in day to day mathematics.
+I took them from Chapter 3 of \cite{Apostol1976} and involved the partial summations of standard arithmetic functions.
+
+Let's  define the notations first which we'll require
+
+\begin{definition}
+    \item
+    \begin{enumerate}
+        \item Given a natural number \(n\), let \(\tau(n)\) denote the number of positive divisors of \(n\), and given \(s\in\RR\) let \(\sigma_s(n)\) denote the sum of the \(s\)-th powers of these divisors.
+
+        \item For \(s\in\RR_{>0}\), define
+            \[
+                \zeta(s) =
+                \begin{cases}
+                    \sum_{n=1}^{\infty} n^{-s} & \text{if } s > 1 \\
+                    \lim_{x\to\infty} \left(\sum_{n\le x} \frac{1}{n^s} - \frac{x^{1-s}}{1-s}\right) & \text{if } 0 < s < 1.
+                \end{cases}
+            \]
+            This is called the \textit{Riemman Zeta-Function}.
+
+        \item Define \(C = \lim_{n\to\infty} (1 + 1/2 + 1/3 + \ldots + 1/n - \log n)\).
+            This is called \textit{Euler's constant}.
+    \end{enumerate}
+\end{definition}
+
+There is a special way to write such functions that run over the divisors of a variable number.
+We write
+\[\tau(n) = \sum_{d\mid n} 1 \qquad \text{and} \qquad \sigma_s(n) = \sum_{d\mid n} d^s.\]
+In particular, this clarifies the fact that \(\sigma_0\) and \(\tau\) are the same function, called the \textit{divisor counting function}.
+Also \(\sigma_1\) is often written just as \(\sigma\) and called the \textit{divisor sum function}.
+The function \(\zeta\) is the heart of number theory.
+Note, the infinite sum \(\sum n^{-s}\) converges if and only if \(s>1\), and thus the case \(0<s<1\) has to be considered separately; we'll not go into details about how this second expression is derived.
+As for the constant \(C\), it features in the theorems below and is not to be confused with the constant \(e = \lim_{n\to\infty} (1+1/n)^n\).
+Although it is not strictly necessary, we'll use the fact that \(\zeta(2) = \pi^2/6\).
+
+One of the goals of number theoretic research is to understand deeply the behaviour of arithmetic functions like \(\tau\) and \(\sigma_s\), and analytic number theory focuses on their behaviour for large \(n\).
+However, functions in number theory are notorious for fluctuating; \(\tau\), for example, takes the value \(2\) for every prime \(n\), of which there are infinitely many.
+So. instead of focusing on \(\tau(n)\) specifically, we can instead question the \textit{average} value of \(\tau(n)\) over a large sample of numbers, leading to the following.
+
+\begin{definition}
+    Given a function \(f:\mathbb N\to \mathbb R\), the \textit{average order} of \(f\) is the function \(\tilde{f}(x) = \frac 1 x\sum_{n\le x} f(n)\).
+\end{definition}
+
+It turns out that we can compute big-$O$ estimates for \(\tilde{\tau}\) and \(\tilde{\sigma_s}\), but before that we need some basic results.
+
+\begin{theorem}[Euler's Summation Formula]\label{theorem:esf}
+    Given a real function \(f:\RR\to\RR\) that is continuously differentiable on the interval \([x,y]\), we have
+    \[\sum_{x<n\le y} f(n) = \int_x^y f(t)\,dt + \int_x^y (t-\fl{t}) f'(t)\,dt + f(x)(x - \fl{x}) - f(y)(y - \fl{y}).\]
+\end{theorem}
+
+\begin{proof}
+    Observe 
+    \begin{align*}
+        \int_{\fl x}^{\fl y} \fl t f'(t)\,dt &= \sum_{n = \fl x + 1}^{\fl y} \int_{n-1}^n \fl t f'(t)\,dt \\
+        &= \sum_{n = \fl x + 1}^{\fl y} \int_{n-1}^n (n-1)f'(t)\,dt \\
+        &= \sum_{n = \fl x + 1}^{\fl y} (n-1)(f(n) - f(n-1)) \\
+        &= \fl y f(\fl y) - \fl x f(\fl x) - \sum_{x<n\le y} f(n),
+    \end{align*}
+    and so
+    \begin{align*}
+        \sum_{x<n\le y} f(n) &= \fl y f(\fl y) - \fl x f(\fl x) - \int_{\fl x}^{\fl y} \fl t f'(t)\,dt \\
+        &= \fl y f(\fl y) - \fl x f(\fl x) - \left(\int_x^y \fl t f'(t)\,dt + \int_{\fl x}^{x} \fl t f'(t)\,dt - \int_{\fl y}^{y} \fl t f'(t)\,dt\right) \\
+        &= \fl y f(\fl y) - \fl x f(\fl x) - \left(\int_x^y \fl t f'(t)\,dt + \fl x (f(x) - f(\fl x)) - \fl y (f(y) - f(\fl y))\right) \\
+        &= \fl y f(y) - \fl x f(x) - \left(\int_x^y \fl t f'(t)\,dt\right). \\
+    \end{align*}
+    Now doing integration by parts gives
+    \[\int_x^y tf'(t)\,dt = \int_x^y f(t)\,dt + yf(y) - xf(x),\]
+    and adding this to the last expression finishes the proof.
+\end{proof}
+
+\begin{theorem}[Exponential Sums]\label{theorem:expsums}
+    For \(x\ge 1\) we've
+    \begin{enumerate}
+        \item \(\sum_{n\le x} 1/n = \log x + C + O(1/x)\);
+        \item \(\sum_{n\le x} 1/n^s = x^{1-s}/(1-s) + \zeta(s) + O(x^{-s})\) if \(s\in\RR_{>0}-\{1\}\);
+        \item \(\sum_{n>x} 1/n^s = O(x^{1-s})\) if \(s>1\);
+        \item \(\sum_{n\le x} n^u = x^{u+1}/(u+1) + O(x^u)\) if \(u\ge 0\).
+    \end{enumerate}
+\end{theorem}
+
+Let's understand what the significance of these equations
+The first of the above equations says that if we define the function \(F:\RR_{>1}\to\RR\) by \(F(x) = \sum_{n\le x} 1/n\), then the function \(F(x) - \log x - C\) grows slower than \(1/x\) as \(x\to\infty\) which means there exists a constant \(k\) such that for all sufficiently large \(x\) we've
+\[C + \log x - \frac k x \le F(x) \le C + \log x + \frac k x.\]
+The other three equations can similarly be converted into such inequalities.
+
+\begin{proof}
+\item
+    \begin{enumerate}
+        \item Taking \(f(t) = 1/t\) in \Cref{theorem:esf} gives
+            \begin{align*}
+                \sum_{n<x} \frac 1 n &= \int_1^x \frac{dt}{t} - \int_1^x \frac{t-\fl t}{t^2}\,dt + 1 - \frac{x-\fl x}{x} \\
+                &= \log x + \left(1 - \int_1^x \frac{t-\fl t}{t^2}\,dt\right) + O\left(\frac 1 x\right)
+            \end{align*}
+            Here, we used the fact that \(-(x-\fl x)/x = O(1/x)\), which is true because \(x-\fl x \le 1\) for all \(x\).
+
+            Now observe 
+            \[\int_1^x \frac{t-\fl t}{t^2}\,dt = \int_1^{\infty} \frac{t-\fl t}{t^2}\,dt - \int_x^{\infty} \frac{t-\fl t}{t^2}\,dt,\]
+            where ,the first improper integral converges by the comparison test with \(\int_1^{\infty} t^{-2}\,dt\).
+            Denote the second integral as a function \(G(x)\) for \(x\ge 1\).
+            We have \(0\le G(x) \le \int_x^{\infty} t^{-2}\,dt = 1/x\), so actually
+            \[\int_1^x \frac{t-\fl t}{t^2}\,dt = \int_1^{\infty} \frac{t-\fl t}{t^2}\,dt + O\left(\frac 1 x \right)\]
+            and putting this in the previous equation we get
+            \[\sum_{n<x} \frac 1 n = \log x + \left(1 - \int_1^{\infty} \frac{t-\fl t}{t^2}\,dt\right) + O\left(\frac 1 x\right).\]
+            Note that the two \(O(1/x)\) have been combined into one.
+            Moving \(\log x\) to the left side and taking the limit as \(x\to\infty\), the \(O(1/x)\) term disappears and we are left with
+            \[\left(1 - \int_1^{\infty} \frac{t-\fl t}{t^2}\,dt\right) = \lim_{x\to\infty} \left(\sum_{n<x} \frac 1 n - \log x\right) = C,\]
+            finishing the proof.
+
+        \item Let \(f(t) = 1/t^s\) in \Cref{theorem:esf} and observe as in part (a) that
+            \[\sum_{n\le x} \frac{1}{n^s} \&= \frac{x^{1-s}}{1-s} + C(s) + O(x^{-s}),\]
+            where
+            \[C(s) = 1 - \frac{1}{1-s} - s\int_1^{\infty} \frac{t-\fl t}{t^{s+1}}\,dt.\]
+            If \(s>1\), then in the limit the left side converges to \(\zeta(s)\) while the non-constant terms on the right vanish, leaving \(C(s) = \zeta(s)\).
+            If \(s<1\), then moving the \(x^{1-s}\) term to the left and taking the limit again gives \(C(s) = \zeta(s)\), finishing the proof.
+
+        \item We 've
+            \[\sum_{n>x} \frac{1}{n^s} = \zeta(s) - \sum_{n\le x} \frac{1}{n^s} = \frac{x^{1-s}}{s-1} + O(x^{-s}) = O(x^{1-s})\]
+            from part (b).
+
+        \item Simply put \(f(t) = t^u\) in \Cref{theorem:esf} and reduce as in parts (a) and (b).
+    \end{enumerate}
+\end{proof}
+
+Using these results, it's now possible to prove the two theorems below that determine the average order of \(\tau\) and \(\sigma_s\).
+Unfortunately, the proof will not be given here due to the lack of space, but it can be found, as mentioned above, in Chapter 3 of \cite{Apostol1976}.
+
+\begin{theorem}[Dirichlet's Formula]\label{theorem:tau}
+    For \(x\ge 1\) we have
+    \[\sum_{n\le x} \tau(n) = x\log x + (2C-1)x + O(\sqrt x)\]
+\end{theorem}
+
+Although the error term \(O(\sqrt x)\) has been improved to smaller powers of \(x\), the infimum of all \(u\) for which the error term is \(O(x^u)\) is an open problem called \textit{Dirichlet's divisor problem}.
+
+\begin{theorem}[Divisor Sum Estimates]\label{theorem:sigma}
+    For \(x\ge 1\) we have
+    \[
+        \sum_{n\le x} \sigma_s(n) =
+        \begin{cases}
+            \pi^2x^2/12 + O(x\log x) & \text{if } s=1 \\
+            \pi^2x/6 + O(\log x) & \text{if } s=-1 \\
+            \zeta(s+1)x^{s+1}/(s+1) + O(x^{\max(1,s)}) & \text{if } s>0 \text{ and } s\ne 1 \\
+            \zeta(1-s)x + O(x^{\max(0,1+s)}) & \text{if } s<0 \text{ and } s\ne -1.
+        \end{cases}
+    \]
+\end{theorem}
+
+As a direct corollary, we get the average orders; simply divide by a factor of \(x\) in each of the above-cited formulas.
+We ignore the error term when mentioning the average order, so the average order of \(\tau\) is \(\log x\) and that of \(\sigma_1\) is \(\pi^2x/12\).
+
+\begin{theorem}
+    For \(x\ge 1\) we've \(\tilde{\tau}(x) = \log x + (2C-1) + O(x^{-1/2})\) and
+    \[
+        \tilde{\sigma_s}(x) =
+        \begin{cases}
+            \pi^2x/12 + O(\log x) & \text{if } s=1 \\
+            \pi^2/6 + O(\log x/x) & \text{if } s=-1 \\
+            \zeta(s+1)x^s/(s+1) + O(x^{\max(0,s-1)}) & \text{if } s>0 \text{ and } s\ne 1 \\
+            \zeta(1-s) + O(x^{\max(-1,s)}) & \text{if } s<0 \text{ and } s\ne -1.
+        \end{cases}
+    \]
+\end{theorem}
+
+The above result can be intepreted as saying that as \(x\to\infty\), the function \(\tau\) is ``on average'' \(\log x + (2C-1)\), since the error term goes to \(0\) in the limit;
+similarly, \(\sigma_{-1}\) is ``on average'' \(\pi^2/6\) for large \(x\).
+
+
+\chapter{Conclusion}\label{ssec:conclusion}
+
+In this investigation, I've introduced and defined two important notations, $O$ and $o$, from their fundamental concepts. The theoretical aspects of their usage have been thoroughly discussed, primarily focusing on their application in dealing with infinite asymptotic estimates. However, it's important to note that both $O$ and $o$ have broader applications, including handling error terms in infinitesimal limits.
+
+The formalization of equations involving Bachmann-Landau notation proved to be challenging due to the inherent vagueness in its interpretation. I've presented a sustained example to illustrate the practical use of $O$ in real mathematics. The example exclusively focused on employing $O$ for infinite asymptotic estimates, but it is crucial to recognize that these notations can be utilized in various mathematical contexts.
+
+
+
+\newpage
+
+\printbibliography
+
+
+\end{document}
